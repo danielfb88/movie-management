@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import RoutesV1 from '../api/v1/routes-v1'
 import { handleError } from './middlewares/handle-error'
 import throw404 from './middlewares/throw-404'
+import verifyAccessToken from './middlewares/verify-access-token'
 
 class App {
   public app: express.Application
@@ -22,6 +23,7 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(bodyParser.json())
 
+    this.app.use(verifyAccessToken)
     this.loadRoutes()
 
     this.app.use(throw404)
