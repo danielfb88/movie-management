@@ -1,7 +1,7 @@
 import * as http from 'http'
 import { createConnection, getConnectionOptions } from 'typeorm'
-import { Context } from './Context'
-import app from './main/app'
+import app from './app'
+import { Context } from './context'
 
 const server = http.createServer(app)
 

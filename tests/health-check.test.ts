@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import app from '../src/main/app'
+import app from '../src/app'
 require('./helpers')
 
 const request = supertest

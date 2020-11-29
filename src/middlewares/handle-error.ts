@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import HTTPStatus from 'http-status'
-import { CustomError, IError } from '../../errors/custom-error'
+import { CustomError, IError } from '../errors/custom-error'
 
 export const handleError = (
   err: CustomError,

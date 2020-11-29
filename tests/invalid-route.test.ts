@@ -1,6 +1,6 @@
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
-import app from '../src/main/app'
+import app from '../src/app'
 import { getMockedToken, IToken } from './helpers'
 
 const request = supertest

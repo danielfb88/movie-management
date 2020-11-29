@@ -6,8 +6,10 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '/tests/',
     '/node_modules/',
-    '/src/main',
-    'server.ts',
+    '/src/middlewares/',
+    '/src/app.ts',
+    '/src/context.ts',
+    '/src/server.ts',
     'src/errors/database-connection-error.ts',
   ],
   coverageReporters: ['json-summary', 'lcov', 'text'],

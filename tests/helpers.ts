@@ -3,7 +3,7 @@ import faker from 'faker'
 import 'reflect-metadata'
 import { Connection, createConnection, getConnectionOptions } from 'typeorm'
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
-import { Context, IContext } from '../src/Context'
+import { Context, IContext } from '../src/context'
 import { generateToken } from '../src/utils/token'
 
 process.env.TZ = 'UTC'
