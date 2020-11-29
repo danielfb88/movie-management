@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node-dev -r dotenv/config -P tsconfig.json src/server.ts",
+    "postgres:start": "docker run -d -p 5430:5432 --name postgres -e POSTGRES_HOST_AUTH_METHOD=trust postgres:11-alpine",
+    "database:create": "docker exec postgres psql -U postgres postgres -c \"CREATE DATABASE $(grep DB_DATABASE .env | cut -d= -f 2)\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
