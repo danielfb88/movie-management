@@ -12,7 +12,7 @@ describe('Token unit tests', () => {
   beforeAll(async done => {
     await userService.deleteAll()
 
-    createdUser = await userService.create(mockUser())
+    createdUser = await userService.create(mockUser({ isAdmin: false }))
 
     done()
   })

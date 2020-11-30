@@ -10,7 +10,7 @@ require('../../helpers')
 const request = supertest
 const userService = new UserService()
 
-const mockedUser = mockUser()
+const mockedUser = mockUser({ isAdmin: false })
 
 describe('User Sign In integration tests', () => {
   beforeAll(async done => {

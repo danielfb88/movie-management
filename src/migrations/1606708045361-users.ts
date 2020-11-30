@@ -8,7 +8,8 @@ export class users1606708045361 implements MigrationInterface {
                 "id" uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(), 
                 "name" TEXT NOT NULL,
                 "email" TEXT NOT NULL,
-                "password" TEXT NOT NULL
+                "password" TEXT NOT NULL,
+                "is_admin" BOOLEAN NOT NULL
             );
         `, undefined);
     }

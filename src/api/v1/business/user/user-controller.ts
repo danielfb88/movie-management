@@ -79,4 +79,28 @@ export default class UserController extends BaseController {
       next(err)
     }
   }
+
+  /**
+   * // TODO
+   * Update user
+   *
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @return {*}  {Promise<void>}
+   * @memberof UserController
+   */
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {}
+
+  /**
+   * // TODO
+   * Disable user
+   *
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @return {*}  {Promise<void>}
+   * @memberof UserController
+   */
+  async disableUser(req: Request, res: Response, next: NextFunction): Promise<void> {}
 }

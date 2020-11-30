@@ -20,6 +20,8 @@ export const signUpValidation = [
     }),
 
   body('password').not().isEmpty(),
+
+  body('isAdmin').not().isEmpty(),
 ]
 
 export const signInValidation = [

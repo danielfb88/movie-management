@@ -13,4 +13,7 @@ export class UserModel {
 
   @Column({ name: 'password' })
   password!: string
+
+  @Column({ name: 'is_admin' })
+  isAdmin!: boolean
 }

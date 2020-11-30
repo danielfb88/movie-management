@@ -8,6 +8,8 @@ export function initUserRoutes(): Router {
 
   router.route('/signup').post(signUpValidation, controller.signUp.bind(controller))
   router.route('/signin').post(signInValidation, controller.signIn.bind(controller))
+  router.route('/:id').put(signInValidation, controller.signIn.bind(controller))
+  router.route('/:id').delete(signInValidation, controller.signIn.bind(controller))
 
   return router
 }
