@@ -1,12 +1,12 @@
 import faker from 'faker'
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
-import app from '../src/app'
+import app from '../../../src/app'
 
 const request = supertest
 
-describe('Token test', () => {
-  const endpoint = '/v1/properties'
+describe('Token integration tests', () => {
+  const endpoint = '/any-endpoint'
 
   test('Should return MISSING_ACCESS_TOKEN error when no access token', async done => {
     const res = await request(app).get(endpoint)

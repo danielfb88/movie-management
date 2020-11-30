@@ -2,7 +2,7 @@ import * as bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import morgan from 'morgan'
-import RoutesV1 from './api/v1/routes-v1'
+import { getRouterV1 } from './api/v1/routes-v1'
 import { handleError } from './middlewares/handle-error'
 import throw404 from './middlewares/throw-404'
 import verifyAccessToken from './middlewares/verify-access-token'
@@ -31,7 +31,7 @@ class App {
   }
 
   loadRoutes(): void {
-    this.app.use('/v1', new RoutesV1().getRouter())
+    this.app.use('/v1', getRouterV1())
   }
 }
 export default new App().app

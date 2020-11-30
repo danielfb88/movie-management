@@ -18,7 +18,7 @@ export async function generateToken(payload: object, expiresIn = '7d'): Promise<
           expiresIn,
         },
         (error, token) => {
-          error !== null ? reject(error) : resolve(token)
+          error !== null ? reject(error) : resolve(token as string)
         },
       )
     } else {

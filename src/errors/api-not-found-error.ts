@@ -1,13 +1,13 @@
 import HTTPStatus from 'http-status'
 import { CustomError, IError } from './custom-error'
 
-export class NotFoundError extends CustomError {
+export class ApiNotFoundError extends CustomError {
   statusCode = HTTPStatus.NOT_FOUND
 
   constructor() {
-    super('NOT_FOUND')
+    super('API_NOT_FOUND')
 
-    Object.setPrototypeOf(this, NotFoundError.prototype)
+    Object.setPrototypeOf(this, ApiNotFoundError.prototype)
   }
 
   serializeErrors(): IError[] {

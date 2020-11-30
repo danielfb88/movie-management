@@ -7,6 +7,7 @@ module.exports = {
     '/tests/',
     '/node_modules/',
     '/src/middlewares/',
+    '/src/migrations/',
     '/src/app.ts',
     '/src/context.ts',
     '/src/server.ts',

@@ -3,7 +3,7 @@ import faker from 'faker'
 import 'reflect-metadata'
 import { Connection, createConnection, getConnectionOptions } from 'typeorm'
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
-import { Context, IContext } from '../src/context'
+import { Context } from '../src/context'
 import { generateToken } from '../src/utils/token'
 
 process.env.TZ = 'UTC'
@@ -52,18 +52,6 @@ afterAll(async () => {
 export interface IToken {
   bearerToken: string
   userId: string
-}
-
-export function makeCtx(ctx: Partial<IContext>): Context {
-  const context: IContext = {
-    db: {
-      connection,
-    },
-    integrations: {},
-    ...ctx,
-  }
-
-  return context
 }
 
 export async function getMockedToken(): Promise<IToken> {

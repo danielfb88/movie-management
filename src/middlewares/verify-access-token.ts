@@ -4,7 +4,7 @@ import { MissingAccessTokenError } from '../errors/missing-access-token-error'
 import { verifyToken } from '../utils/token'
 
 export default async function verifyAccessToken(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const publicPaths = ['/v1/health']
+  const publicPaths = ['/v1/health', '/v1/user/signup', '/v1/user/signin']
   const matched = publicPaths.some(path => req.path.includes(path))
   if (matched) {
     return next()
