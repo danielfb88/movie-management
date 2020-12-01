@@ -38,7 +38,8 @@ beforeAll(async () => {
 
     Context.createContext({ connection })
   } catch (err) {
-    process.stderr.write(`${JSON.stringify(err)}\n${JSON.stringify(err.stack)}\n`)
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    process.stderr.write(`${err}\n${err.stack}\n`)
     process.exit(1)
   }
 }, 60000)
