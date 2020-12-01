@@ -34,8 +34,8 @@ describe('User Sign Up integration tests', () => {
       const mockedUser = mockUser({ isAdmin: false })
 
       const res = await request(app).post(endpoint).send({
-        name: mockedUser.name,
-        email: undefined,
+        name: undefined,
+        email: mockedUser.email,
         password: mockedUser.password,
       })
 
@@ -103,7 +103,7 @@ describe('User Sign Up integration tests', () => {
 
     test('Should return BAD_REQUEST error when email already in use', async done => {
       const mockedUser = mockUser({ isAdmin: false })
-      const createdUser = await userService.create({
+      const createdUser = await userService.save({
         ...mockUser({ isAdmin: false }),
         password: await generateHash(mockedUser.password),
       })

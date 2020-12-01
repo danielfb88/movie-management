@@ -1,7 +1,7 @@
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
 import app from '../src/app'
-import { getMockedToken, IToken } from './helpers'
+import { getToken, IToken } from './helpers'
 
 const request = supertest
 
@@ -11,7 +11,7 @@ describe('Invalid route test', () => {
   const endpoint = '/v1/invalid-route'
 
   beforeAll(async done => {
-    token = await getMockedToken()
+    token = await getToken()
 
     done()
   })

@@ -54,8 +54,8 @@ export interface IToken {
   userId: string
 }
 
-export async function getMockedToken(): Promise<IToken> {
-  const userId = faker.random.uuid()
+export async function getToken(id?: string): Promise<IToken> {
+  const userId = id ?? faker.random.uuid()
   const bearerToken = `Bearer ${await generateToken({ userId })}`
   return {
     bearerToken,

@@ -15,7 +15,7 @@ const mockedUser = mockUser({ isAdmin: false })
 describe('User Sign In integration tests', () => {
   beforeAll(async done => {
     const { hash } = await generateHash(mockedUser.password)
-    await userService.create({ ...mockedUser, password: hash })
+    await userService.save({ ...mockedUser, password: hash })
 
     done()
   })

@@ -26,13 +26,24 @@ export default class UserService extends BaseService<UserRepository> {
   }
 
   /**
-   * Create new user
+   * Find by Id
+   *
+   * @param {string} id
+   * @return {*}  {(Promise<UserModel | undefined>)}
+   * @memberof UserService
+   */
+  async findById(id: string): Promise<UserModel | undefined> {
+    return await this.getRepository().findOne({ id })
+  }
+
+  /**
+   * Create or update user
    *
    * @param {UserModel} user
    * @return {*}  {Promise<User>}
    * @memberof UserService
    */
-  async create(user: object): Promise<UserModel> {
+  async save(user: object): Promise<UserModel> {
     return await this.getRepository().save(user)
   }
 

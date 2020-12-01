@@ -7,6 +7,7 @@ import { UserNotFoundError } from '../../../../errors/user-not-found-error'
 import { generateHash } from '../../../../utils/hash'
 import { generateToken } from '../../../../utils/token'
 import UserService from './user-service'
+import { IUserUpdateRequest } from './user-types'
 
 export default class UserController extends BaseController {
   protected userService: UserService
@@ -31,7 +32,7 @@ export default class UserController extends BaseController {
 
       const { hash } = await generateHash(req.body.password)
 
-      const createdUser = await this.userService.create({ ...req.body, password: hash })
+      const createdUser = await this.userService.save({ ...req.body, password: hash })
 
       const accessToken = await generateToken({ userId: createdUser.id })
 
@@ -81,7 +82,6 @@ export default class UserController extends BaseController {
   }
 
   /**
-   * // TODO
    * Update user
    *
    * @param {Request} req
@@ -90,7 +90,31 @@ export default class UserController extends BaseController {
    * @return {*}  {Promise<void>}
    * @memberof UserController
    */
-  async update(req: Request, res: Response, next: NextFunction): Promise<void> {}
+  async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      this.checkValidationErrors(req)
+
+      const { userId } = req.headers
+      const body: IUserUpdateRequest = req.body
+
+      const user = await this.userService.findById(userId as string)
+
+      if (user === undefined) {
+        throw new UserNotFoundError()
+      }
+
+      const updatedUser = await this.userService.save({ ...user, name: body.name })
+
+      res.status(HTTPStatus.OK).json({
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
 
   /**
    * // TODO
@@ -103,4 +127,15 @@ export default class UserController extends BaseController {
    * @memberof UserController
    */
   async disableUser(req: Request, res: Response, next: NextFunction): Promise<void> {}
+
+  /**
+   * Change password
+   *
+   * @param {Request} req
+   * @param {Response} res
+   * @param {NextFunction} next
+   * @return {*}  {Promise<void>}
+   * @memberof UserController
+   */
+  async changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {}
 }
