@@ -1,7 +1,14 @@
 import faker from 'faker'
-import { UserModel } from '../../src/models/user-model'
 
-export function mockUser(args: { isAdmin: boolean }): UserModel {
+interface IMockUser {
+  id: string
+  name: string
+  email: string
+  password: string
+  isAdmin: boolean
+}
+
+export function mockUser(args: { isAdmin: boolean }): IMockUser {
   return {
     id: faker.random.uuid(),
     name: faker.name.firstName(),

@@ -10,6 +10,9 @@ export class users1606708045361 implements MigrationInterface {
                 "email" TEXT NOT NULL,
                 "password" TEXT NOT NULL,
                 "is_admin" BOOLEAN NOT NULL,
+                "created_at" timestamp NOT NULL DEFAULT NOW(),
+                "updated_at" timestamp NOT NULL DEFAULT NOW(),
+                "deleted_at" timestamp,
                 CONSTRAINT email_unique UNIQUE (email)
             );
         `, undefined);

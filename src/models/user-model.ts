@@ -1,19 +1,28 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm'
 
 @Entity({ name: 'users' })
 export class UserModel {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
-  @Column({ name: 'name' })
+  @Column()
   name!: string
 
-  @Column({ name: 'email' })
+  @Column()
   email!: string
 
-  @Column({ name: 'password' })
+  @Column()
   password!: string
 
-  @Column({ name: 'is_admin' })
+  @Column()
   isAdmin!: boolean
+
+  @Column({ type: 'timestamp' })
+  createdAt!: Timestamp
+
+  @Column({ type: 'timestamp' })
+  updatedAt!: Timestamp
+
+  @Column({ type: 'timestamp' })
+  deletedAt!: Timestamp
 }

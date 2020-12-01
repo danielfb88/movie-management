@@ -1,3 +1,4 @@
+import { IsNull } from 'typeorm'
 import BaseService from '../../../../base/base-service'
 import { UserModel } from '../../../../models/user-model'
 import { UserRepository } from '../../../../repositories/UserRepository'
@@ -26,6 +27,22 @@ export default class UserService extends BaseService<UserRepository> {
   }
 
   /**
+   * Find enabled by email
+   *
+   * @param {string} email
+   * @return {*}  {(Promise<UserModel | undefined>)}
+   * @memberof UserService
+   */
+  async findEnabledByEmail(email: string): Promise<UserModel | undefined> {
+    return await this.getRepository().findOne({
+      where: {
+        email,
+        deletedAt: IsNull(),
+      },
+    })
+  }
+
+  /**
    * Find by Id
    *
    * @param {string} id
@@ -37,6 +54,22 @@ export default class UserService extends BaseService<UserRepository> {
   }
 
   /**
+   * Find enabled by Id
+   *
+   * @param {string} id
+   * @return {*}  {(Promise<UserModel | undefined>)}
+   * @memberof UserService
+   */
+  async findEnabledById(id: string): Promise<UserModel | undefined> {
+    return await this.getRepository().findOne({
+      where: {
+        id,
+        deletedAt: IsNull(),
+      },
+    })
+  }
+
+  /**
    * Create or update user
    *
    * @param {UserModel} user
@@ -45,6 +78,17 @@ export default class UserService extends BaseService<UserRepository> {
    */
   async save(user: object): Promise<UserModel> {
     return await this.getRepository().save(user)
+  }
+
+  /**
+   * Disable user
+   *
+   * @param {string} id
+   * @return {*}  {Promise<void>}
+   * @memberof UserService
+   */
+  async disableUser(id: string): Promise<void> {
+    await this.getRepository().save({ id, deletedAt: new Date() })
   }
 
   /**

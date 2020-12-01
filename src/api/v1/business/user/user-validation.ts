@@ -1,4 +1,4 @@
-import { body, check, param } from 'express-validator'
+import { body, check } from 'express-validator'
 import UserdService from './user-service'
 
 export const signUpValidation = [
@@ -30,6 +30,4 @@ export const signInValidation = [
   body('password').not().isEmpty(),
 ]
 
-export const updateValidation = [body('name').exists(), param('id').exists()]
-
-export const deleteValidation = [param('id').exists()]
+export const updateValidation = [body('name').exists()]

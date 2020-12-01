@@ -61,7 +61,7 @@ export default class UserController extends BaseController {
 
       const { body } = req
 
-      const user = await this.userService.findByEmail(body.email)
+      const user = await this.userService.findEnabledByEmail(body.email)
 
       if (user === undefined) {
         throw new UserNotFoundError()
@@ -97,13 +97,13 @@ export default class UserController extends BaseController {
       const { userId } = req.headers
       const body: IUserUpdateRequest = req.body
 
-      const user = await this.userService.findById(userId as string)
+      const user = await this.userService.findEnabledById(userId as string)
 
       if (user === undefined) {
         throw new UserNotFoundError()
       }
 
-      const updatedUser = await this.userService.save({ ...user, name: body.name })
+      const updatedUser = await this.userService.save({ ...user, name: body.name, updatedAt: new Date() })
 
       res.status(HTTPStatus.OK).json({
         id: updatedUser.id,
@@ -117,7 +117,6 @@ export default class UserController extends BaseController {
   }
 
   /**
-   * // TODO
    * Disable user
    *
    * @param {Request} req
@@ -126,16 +125,21 @@ export default class UserController extends BaseController {
    * @return {*}  {Promise<void>}
    * @memberof UserController
    */
-  async disableUser(req: Request, res: Response, next: NextFunction): Promise<void> {}
+  async disableUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { userId } = req.headers
 
-  /**
-   * Change password
-   *
-   * @param {Request} req
-   * @param {Response} res
-   * @param {NextFunction} next
-   * @return {*}  {Promise<void>}
-   * @memberof UserController
-   */
-  async changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {}
+      const user = await this.userService.findEnabledById(userId as string)
+
+      if (user === undefined) {
+        throw new UserNotFoundError()
+      }
+
+      await this.userService.disableUser(userId as string)
+
+      res.sendStatus(HTTPStatus.OK)
+    } catch (err) {
+      next(err)
+    }
+  }
 }
