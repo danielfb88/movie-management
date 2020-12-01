@@ -13,16 +13,16 @@ export class UserModel {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
-  @Column()
+  @Column({ nullable: false })
   name!: string
 
-  @Column()
+  @Column({ unique: true, nullable: false })
   email!: string
 
-  @Column()
+  @Column({ nullable: false })
   password!: string
 
-  @Column()
+  @Column({ nullable: false })
   isAdmin!: boolean
 
   @CreateDateColumn()

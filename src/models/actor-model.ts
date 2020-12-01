@@ -6,7 +6,7 @@ export class ActorModel {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
-  @Column()
+  @Column({ nullable: false })
   name!: string
 
   @ManyToOne(type => ActorModel, movies => MovieModel, { eager: true })

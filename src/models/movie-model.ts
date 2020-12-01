@@ -6,13 +6,13 @@ export class MovieModel {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
-  @Column()
+  @Column({ nullable: false })
   name!: string
 
-  @Column()
+  @Column({ nullable: false })
   director!: string
 
-  @Column()
+  @Column({ nullable: false })
   gender!: string
 
   @OneToMany(type => ActorModel, movies => MovieModel)
