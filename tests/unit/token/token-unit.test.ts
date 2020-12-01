@@ -1,12 +1,12 @@
 import UserService from '../../../src/api/v1/business/user/user-service'
-import { UserModel } from '../../../src/models/user-model'
+import { User } from '../../../src/models/user'
 import { generateToken } from '../../../src/utils/token'
 import '../../helpers'
 import { mockUser } from '../../mocks/user-mock'
 
 const userService = new UserService()
 
-let createdUser: UserModel
+let createdUser: User
 
 describe('Token unit tests', () => {
   beforeAll(async done => {

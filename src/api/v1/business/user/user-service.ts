@@ -1,6 +1,6 @@
 import { IsNull } from 'typeorm'
 import BaseService from '../../../../base/base-service'
-import { UserModel } from '../../../../models/user-model'
+import { User } from '../../../../models/user'
 import { UserRepository } from '../../../../repositories/UserRepository'
 
 export default class UserService extends BaseService<UserRepository> {
@@ -22,7 +22,7 @@ export default class UserService extends BaseService<UserRepository> {
    * @return {*}  {(Promise<User | undefined>)}
    * @memberof UserService
    */
-  async findByEmail(email: string): Promise<UserModel | undefined> {
+  async findByEmail(email: string): Promise<User | undefined> {
     return await this.getRepository().findOne({ email })
   }
 
@@ -33,7 +33,7 @@ export default class UserService extends BaseService<UserRepository> {
    * @return {*}  {(Promise<UserModel | undefined>)}
    * @memberof UserService
    */
-  async findEnabledByEmail(email: string): Promise<UserModel | undefined> {
+  async findEnabledByEmail(email: string): Promise<User | undefined> {
     return await this.getRepository().findOne({
       where: {
         email,
@@ -49,7 +49,7 @@ export default class UserService extends BaseService<UserRepository> {
    * @return {*}  {(Promise<UserModel | undefined>)}
    * @memberof UserService
    */
-  async findById(id: string): Promise<UserModel | undefined> {
+  async findById(id: string): Promise<User | undefined> {
     return await this.getRepository().findOne({ id })
   }
 
@@ -60,7 +60,7 @@ export default class UserService extends BaseService<UserRepository> {
    * @return {*}  {(Promise<UserModel | undefined>)}
    * @memberof UserService
    */
-  async findEnabledById(id: string): Promise<UserModel | undefined> {
+  async findEnabledById(id: string): Promise<User | undefined> {
     return await this.getRepository().findOne({
       where: {
         id,
@@ -72,11 +72,11 @@ export default class UserService extends BaseService<UserRepository> {
   /**
    * Create or update user
    *
-   * @param {UserModel} user
+   * @param {User} user
    * @return {*}  {Promise<User>}
    * @memberof UserService
    */
-  async save(user: object): Promise<UserModel> {
+  async save(user: object): Promise<User> {
     return await this.getRepository().save(user)
   }
 

@@ -8,8 +8,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ name: 'users' })
-export class UserModel {
+@Entity()
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
