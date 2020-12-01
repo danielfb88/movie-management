@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Timestamp,
+  UpdateDateColumn,
+} from 'typeorm'
 
 @Entity({ name: 'users' })
 export class UserModel {
@@ -17,12 +25,12 @@ export class UserModel {
   @Column()
   isAdmin!: boolean
 
-  @Column({ type: 'timestamp' })
+  @CreateDateColumn()
   createdAt!: Timestamp
 
-  @Column({ type: 'timestamp' })
+  @UpdateDateColumn()
   updatedAt!: Timestamp
 
-  @Column({ type: 'timestamp' })
+  @DeleteDateColumn()
   deletedAt!: Timestamp
 }

@@ -3,7 +3,7 @@ import { validationResult } from 'express-validator'
 import { RequestValidationError } from '../errors/request-validation-error'
 
 export default class BaseController {
-  checkValidationErrors(req: Request): void {
+  protected checkValidationErrors(req: Request): void {
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
