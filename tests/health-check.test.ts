@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import app from '../src/app'
-require('./helpers')
+import './helpers'
 
 const request = supertest
 

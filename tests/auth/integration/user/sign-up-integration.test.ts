@@ -1,10 +1,10 @@
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
-import UserService from '../../../src/api/v1/business/user/user-service'
-import app from '../../../src/app'
-import { generateHash } from '../../../src/utils/hash'
-import { mockUser } from '../../mocks/user-mock'
-require('../../helpers')
+import UserService from '../../../../src/api/v1/business/user/user-service'
+import app from '../../../../src/app'
+import { generateHash } from '../../../../src/utils/hash'
+import '../../../helpers'
+import { mockUser } from '../../../mocks/user-mock'
 
 const request = supertest
 const userService = new UserService()

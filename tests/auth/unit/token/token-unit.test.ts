@@ -1,8 +1,8 @@
-import UserService from '../../../src/api/v1/business/user/user-service'
-import { UserModel } from '../../../src/models/user-model'
-import { generateToken } from '../../../src/utils/token'
-import { mockUser } from '../../mocks/user-mock'
-require('../../helpers')
+import UserService from '../../../../src/api/v1/business/user/user-service'
+import { UserModel } from '../../../../src/models/user-model'
+import { generateToken } from '../../../../src/utils/token'
+import '../../../helpers'
+import { mockUser } from '../../../mocks/user-mock'
 
 const userService = new UserService()
 

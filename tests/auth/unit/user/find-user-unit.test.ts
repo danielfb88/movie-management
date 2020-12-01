@@ -1,6 +1,6 @@
-import UserService from '../../../src/api/v1/business/user/user-service'
-import { mockUser } from '../../mocks/user-mock'
-require('../../helpers')
+import UserService from '../../../../src/api/v1/business/user/user-service'
+import '../../../helpers'
+import { mockUser } from '../../../mocks/user-mock'
 
 const userService = new UserService()
 
