@@ -17,7 +17,7 @@ let token: IToken
 describe('Movie creation integration tests', () => {
   beforeAll(async done => {
     // creating user
-    const mockedUser = mockUser({ isAdmin: false })
+    const mockedUser = mockUser({ isAdmin: true })
     const { hash } = await generateHash(mockedUser.password)
 
     const createdUser = await userService.save({ ...mockedUser, password: hash })
@@ -52,6 +52,26 @@ describe('Movie creation integration tests', () => {
       const movie = await movieService.findById(res.body.id)
 
       expect(movie?.actors).toHaveLength(3)
+
+      done()
+    })
+
+    test('Should return UNAUTHORIZED error when user isnt admin', async done => {
+      // creating user
+      const mockedNotAdminUser = mockUser({ isAdmin: false })
+      const { hash } = await generateHash(mockedNotAdminUser.password)
+
+      const createdNotAdminUser = await userService.save({ ...mockedNotAdminUser, password: hash })
+
+      const res = await request(app)
+        .post(endpoint)
+        .send({
+          ...mockMovie(),
+          name: undefined,
+        })
+        .set('Authorization', (await getToken(createdNotAdminUser.id)).bearerToken)
+
+      expect(res.status).toBe(HTTPStatus.UNAUTHORIZED)
 
       done()
     })

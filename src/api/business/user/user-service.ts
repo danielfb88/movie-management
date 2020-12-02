@@ -1,5 +1,6 @@
 import { IsNull } from 'typeorm'
 import BaseService from '../../../base/base-service'
+import { UserNotFoundError } from '../../../errors/user-not-found-error'
 import { User } from '../../../models/user'
 import { UserRepository } from '../../../repositories/UserRepository'
 
@@ -99,5 +100,20 @@ export default class UserService extends BaseService<UserRepository> {
    */
   async deleteAll(): Promise<void> {
     await this.getRepository().delete({})
+  }
+
+  /**
+   * Check if user is admin
+   *
+   * @param {string} id
+   * @return {*}  {Promise<boolean>}
+   * @memberof UserService
+   */
+  async isAdmin(id: string): Promise<boolean> {
+    const user = await this.getRepository().findOne({ id })
+
+    if (user === undefined) throw new UserNotFoundError()
+
+    return user.isAdmin
   }
 }
