@@ -76,7 +76,7 @@ export default class UserService extends BaseService<UserRepository> {
    * @return {*}  {Promise<User>}
    * @memberof UserService
    */
-  async save(user: object): Promise<User> {
+  async save(user: User): Promise<User> {
     return await this.getRepository().save(user)
   }
 

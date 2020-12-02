@@ -4,10 +4,10 @@ import * as HTTPStatus from 'http-status'
 import BaseController from '../../../../base/base-controller'
 import { UnauthorizedError } from '../../../../errors/unauthorized-error'
 import { UserNotFoundError } from '../../../../errors/user-not-found-error'
+import { User } from '../../../../models/user'
 import { generateHash } from '../../../../utils/hash'
 import { generateToken } from '../../../../utils/token'
 import UserService from './user-service'
-import { IUserUpdateRequest } from './user-types'
 
 export default class UserController extends BaseController {
   protected userService: UserService
@@ -30,9 +30,17 @@ export default class UserController extends BaseController {
     try {
       this.checkValidationErrors(req)
 
-      const { hash } = await generateHash(req.body.password)
+      const { body } = req
 
-      const createdUser = await this.userService.save({ ...req.body, password: hash })
+      const { hash } = await generateHash(body.password)
+
+      const user = new User()
+      user.name = body.name
+      user.email = body.email
+      user.password = hash
+      user.isAdmin = body.isAdmin
+
+      const createdUser = await this.userService.save(user)
 
       const accessToken = await generateToken({ userId: createdUser.id })
 
@@ -95,7 +103,7 @@ export default class UserController extends BaseController {
       this.checkValidationErrors(req)
 
       const { userId } = req.headers
-      const body: IUserUpdateRequest = req.body
+      const { body } = req
 
       const user = await this.userService.findEnabledById(userId as string)
 
@@ -103,7 +111,9 @@ export default class UserController extends BaseController {
         throw new UserNotFoundError()
       }
 
-      const updatedUser = await this.userService.save({ ...user, name: body.name, updatedAt: new Date() })
+      user.name = body.name
+
+      const updatedUser = await this.userService.save(user)
 
       res.status(HTTPStatus.OK).json({
         id: updatedUser.id,

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import * as HTTPStatus from 'http-status'
 import BaseController from '../../../../base/base-controller'
+import { Movie } from '../../../../models/movie'
 import MovieService from './movie-service'
 
 export default class MovieController extends BaseController {
@@ -24,11 +25,15 @@ export default class MovieController extends BaseController {
     try {
       this.checkValidationErrors(req)
 
-      const createdMovie = await this.movieService.save({
-        name: req.body.name,
-        director: req.body.director,
-        gender: req.body.gender,
-      })
+      const movie = new Movie()
+      movie.name = req.body.name
+      movie.director = req.body.director
+      movie.gender = req.body.gender
+
+      // TODO: save actors
+      movie.actors = []
+
+      const createdMovie = await this.movieService.save(movie)
 
       res.status(HTTPStatus.CREATED).json({
         id: createdMovie.id,

@@ -17,11 +17,11 @@ export default class MovieService extends BaseService<MovieRepository> {
   /**
    * Create or update movie
    *
-   * @param {object} movie
+   * @param {Movie} movie
    * @return {*}  {Promise<MovieModel>}
    * @memberof MovieService
    */
-  async save(movie: object): Promise<Movie> {
+  async save(movie: Movie): Promise<Movie> {
     return await this.getRepository().save(movie)
   }
 }
