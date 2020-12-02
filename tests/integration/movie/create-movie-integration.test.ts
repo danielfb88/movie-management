@@ -1,5 +1,6 @@
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
+import MovieService from '../../../src/api/business/movie/movie-service'
 import UserService from '../../../src/api/business/user/user-service'
 import app from '../../../src/app'
 import { generateHash } from '../../../src/utils/hash'
@@ -9,6 +10,7 @@ import { mockUser } from '../../mocks/user-mock'
 
 const request = supertest
 const userService = new UserService()
+const movieService = new MovieService()
 
 let token: IToken
 
@@ -34,6 +36,22 @@ describe('Movie creation integration tests', () => {
 
       expect(res.status).toBe(HTTPStatus.CREATED)
       expect(res.body.id).toBeTruthy()
+
+      done()
+    })
+
+    test('Should create a movie with actors', async done => {
+      const res = await request(app)
+        .post(endpoint)
+        .send({ ...mockMovie(), actors: ['Jason Brody', 'Vas Montenegro', 'Charles Bukowsky'] })
+        .set('Authorization', token.bearerToken)
+
+      expect(res.status).toBe(HTTPStatus.CREATED)
+      expect(res.body.id).toBeTruthy()
+
+      const movie = await movieService.findById(res.body.id)
+
+      expect(movie?.actors).toHaveLength(3)
 
       done()
     })

@@ -15,7 +15,7 @@ export class Movie {
   @Column({ nullable: false })
   gender!: string
 
-  @ManyToMany(type => Actor)
+  @ManyToMany(type => Actor, { eager: true })
   @JoinTable()
   actors!: Actor[]
 }

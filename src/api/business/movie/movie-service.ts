@@ -24,4 +24,15 @@ export default class MovieService extends BaseService<MovieRepository> {
   async save(movie: Movie): Promise<Movie> {
     return await this.getRepository().save(movie)
   }
+
+  /**
+   * Find by Id
+   *
+   * @param {string} id
+   * @return {*}  {(Promise<Movie | undefined>)}
+   * @memberof MovieService
+   */
+  async findById(id: string): Promise<Movie | undefined> {
+    return await this.getRepository().findOne({ id })
+  }
 }
