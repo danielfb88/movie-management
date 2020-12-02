@@ -1,6 +1,6 @@
-import BaseService from '../../../../base/base-service'
-import { Movie } from '../../../../models/movie'
-import { MovieRepository } from '../../../../repositories/MovieRepository'
+import BaseService from '../../../base/base-service'
+import { Movie } from '../../../models/movie'
+import { MovieRepository } from '../../../repositories/MovieRepository'
 
 export default class MovieService extends BaseService<MovieRepository> {
   /**

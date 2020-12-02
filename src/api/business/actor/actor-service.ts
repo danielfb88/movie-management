@@ -1,5 +1,5 @@
-import BaseService from '../../../../base/base-service'
-import { ActorRepository } from '../../../../repositories/ActorRepository'
+import BaseService from '../../../base/base-service'
+import { ActorRepository } from '../../../repositories/ActorRepository'
 
 export default class ActorService extends BaseService<ActorRepository> {
   /**

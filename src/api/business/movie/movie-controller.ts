@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import * as HTTPStatus from 'http-status'
-import BaseController from '../../../../base/base-controller'
-import { Movie } from '../../../../models/movie'
+import BaseController from '../../../base/base-controller'
+import { Movie } from '../../../models/movie'
 import MovieService from './movie-service'
 
 export default class MovieController extends BaseController {

@@ -1,7 +1,7 @@
 import { IsNull } from 'typeorm'
-import BaseService from '../../../../base/base-service'
-import { User } from '../../../../models/user'
-import { UserRepository } from '../../../../repositories/UserRepository'
+import BaseService from '../../../base/base-service'
+import { User } from '../../../models/user'
+import { UserRepository } from '../../../repositories/UserRepository'
 
 export default class UserService extends BaseService<UserRepository> {
   /**

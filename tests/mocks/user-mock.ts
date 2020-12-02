@@ -1,19 +1,13 @@
 import faker from 'faker'
+import { User } from '../../src/models/user'
 
-interface IMockUser {
-  id: string
-  name: string
-  email: string
-  password: string
-  isAdmin: boolean
-}
+export function mockUser(args: { isAdmin: boolean }): User {
+  const user = new User()
+  user.id = faker.random.uuid()
+  user.name = faker.name.firstName()
+  user.email = faker.internet.email()
+  user.password = faker.internet.password()
+  user.isAdmin = args.isAdmin
 
-export function mockUser(args: { isAdmin: boolean }): IMockUser {
-  return {
-    id: faker.random.uuid(),
-    name: faker.name.firstName(),
-    email: faker.internet.email(),
-    password: faker.random.alphaNumeric(6),
-    isAdmin: args.isAdmin,
-  }
+  return user
 }

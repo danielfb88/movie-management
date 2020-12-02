@@ -1,4 +1,5 @@
-import UserService from '../../../src/api/v1/business/user/user-service'
+import UserService from '../../../src/api/business/user/user-service'
+import { generateHash } from '../../../src/utils/hash'
 import '../../helpers'
 import { mockUser } from '../../mocks/user-mock'
 
@@ -7,7 +8,9 @@ const userService = new UserService()
 describe('User find unit tests', () => {
   test('Should find enabled user by email', async done => {
     const mockedUser = mockUser({ isAdmin: false })
-    await userService.save(mockedUser)
+    const { hash } = await generateHash(mockedUser.password)
+
+    await userService.save({ ...mockedUser, password: hash })
 
     const user = await userService.findEnabledByEmail(mockedUser.email)
 
@@ -18,7 +21,9 @@ describe('User find unit tests', () => {
 
   test('Should not find disabled user by email', async done => {
     const mockedUser = mockUser({ isAdmin: false })
-    await userService.save(mockedUser)
+    const { hash } = await generateHash(mockedUser.password)
+
+    await userService.save({ ...mockedUser, password: hash })
 
     await userService.disableUser(mockedUser.id)
 
@@ -31,7 +36,9 @@ describe('User find unit tests', () => {
 
   test('Should find enabled user by id', async done => {
     const mockedUser = mockUser({ isAdmin: false })
-    await userService.save(mockedUser)
+    const { hash } = await generateHash(mockedUser.password)
+
+    await userService.save({ ...mockedUser, password: hash })
 
     const user = await userService.findEnabledById(mockedUser.id)
 
@@ -42,7 +49,9 @@ describe('User find unit tests', () => {
 
   test('Should not find disabled user by id', async done => {
     const mockedUser = mockUser({ isAdmin: false })
-    await userService.save(mockedUser)
+    const { hash } = await generateHash(mockedUser.password)
+
+    await userService.save({ ...mockedUser, password: hash })
 
     await userService.disableUser(mockedUser.id)
 

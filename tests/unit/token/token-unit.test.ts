@@ -1,5 +1,6 @@
-import UserService from '../../../src/api/v1/business/user/user-service'
+import UserService from '../../../src/api/business/user/user-service'
 import { User } from '../../../src/models/user'
+import { generateHash } from '../../../src/utils/hash'
 import { generateToken } from '../../../src/utils/token'
 import '../../helpers'
 import { mockUser } from '../../mocks/user-mock'
@@ -12,7 +13,10 @@ describe('Token unit tests', () => {
   beforeAll(async done => {
     await userService.deleteAll()
 
-    createdUser = await userService.save(mockUser({ isAdmin: false }))
+    const mockedUser = mockUser({ isAdmin: false })
+    const { hash } = await generateHash(mockedUser.password)
+
+    createdUser = await userService.save({ ...mockedUser, password: hash })
 
     done()
   })

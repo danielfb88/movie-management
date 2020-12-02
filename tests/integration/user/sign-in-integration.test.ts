@@ -1,8 +1,9 @@
 import faker from 'faker'
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
-import UserService from '../../../src/api/v1/business/user/user-service'
+import UserService from '../../../src/api/business/user/user-service'
 import app from '../../../src/app'
+import { User } from '../../../src/models/user'
 import { generateHash } from '../../../src/utils/hash'
 import '../../helpers'
 import { mockUser } from '../../mocks/user-mock'
@@ -10,22 +11,25 @@ import { mockUser } from '../../mocks/user-mock'
 const request = supertest
 const userService = new UserService()
 
-const mockedUser = mockUser({ isAdmin: false })
+let mockedUser: User
+let createdUser: User
 
 describe('User Sign In integration tests', () => {
   beforeAll(async done => {
+    mockedUser = mockUser({ isAdmin: false })
     const { hash } = await generateHash(mockedUser.password)
-    await userService.save({ ...mockedUser, password: hash })
+
+    createdUser = await userService.save({ ...mockedUser, password: hash })
 
     done()
   })
 
-  describe('POST /v1/user/signin/', () => {
-    const endpoint = '/v1/user/signin'
+  describe('POST /api/user/signin/', () => {
+    const endpoint = '/api/user/signin'
 
     test('Should sign in user', async done => {
       const res = await request(app).post(endpoint).send({
-        email: mockedUser.email,
+        email: createdUser.email,
         password: mockedUser.password,
       })
 
@@ -38,7 +42,7 @@ describe('User Sign In integration tests', () => {
 
     test('Should return UNAUTHORIZED when unnauthorized access', async done => {
       const res = await request(app).post(endpoint).send({
-        email: mockedUser.email,
+        email: createdUser.email,
         password: 'wrong-password',
       })
 
@@ -50,7 +54,7 @@ describe('User Sign In integration tests', () => {
     test('Should return BAD_REQUEST error when sent an invalid email', async done => {
       const res = await request(app).post(endpoint).send({
         email: 'invalid_email',
-        password: mockedUser.password,
+        password: createdUser.password,
       })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
@@ -61,7 +65,7 @@ describe('User Sign In integration tests', () => {
     test('Should return BAD_REQUEST error when not sent a required email', async done => {
       const res = await request(app).post(endpoint).send({
         email: undefined,
-        password: mockedUser.password,
+        password: createdUser.password,
       })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
@@ -71,7 +75,7 @@ describe('User Sign In integration tests', () => {
 
     test('Should return BAD_REQUEST error when not sent a required password', async done => {
       const res = await request(app).post(endpoint).send({
-        email: mockedUser.email,
+        email: createdUser.email,
         password: undefined,
       })
 

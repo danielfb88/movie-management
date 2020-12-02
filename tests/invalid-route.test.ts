@@ -8,7 +8,7 @@ const request = supertest
 let token: IToken
 
 describe('Invalid route test', () => {
-  const endpoint = '/v1/invalid-route'
+  const endpoint = '/api/invalid-route'
 
   beforeAll(async done => {
     token = await getToken()

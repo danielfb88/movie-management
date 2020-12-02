@@ -1,7 +1,8 @@
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
-import UserService from '../../../src/api/v1/business/user/user-service'
+import UserService from '../../../src/api/business/user/user-service'
 import app from '../../../src/app'
+import { User } from '../../../src/models/user'
 import { generateHash } from '../../../src/utils/hash'
 import '../../helpers'
 import { mockUser } from '../../mocks/user-mock'
@@ -9,18 +10,20 @@ import { mockUser } from '../../mocks/user-mock'
 const request = supertest
 const userService = new UserService()
 
+let mockedUser: User
+
 describe('User Sign Up integration tests', () => {
   beforeAll(async done => {
+    mockedUser = mockUser({ isAdmin: false })
+
     done()
   })
 
-  describe('POST /v1/user/signup', () => {
-    const endpoint = '/v1/user/signup'
+  describe('POST /api/user/signup', () => {
+    const endpoint = '/api/user/signup'
 
     test('Should create an user', async done => {
-      const res = await request(app)
-        .post(endpoint)
-        .send(mockUser({ isAdmin: false }))
+      const res = await request(app).post(endpoint).send(mockedUser)
 
       expect(res.status).toBe(HTTPStatus.CREATED)
       expect(res.body.id).toBeTruthy()
@@ -31,13 +34,12 @@ describe('User Sign Up integration tests', () => {
     })
 
     test('Should return BAD_REQUEST error when not sent required name', async done => {
-      const mockedUser = mockUser({ isAdmin: false })
-
-      const res = await request(app).post(endpoint).send({
-        name: undefined,
-        email: mockedUser.email,
-        password: mockedUser.password,
-      })
+      const res = await request(app)
+        .post(endpoint)
+        .send({
+          ...mockedUser,
+          name: undefined,
+        })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
 
@@ -45,13 +47,12 @@ describe('User Sign Up integration tests', () => {
     })
 
     test('Should return BAD_REQUEST error when not sent required email', async done => {
-      const mockedUser = mockUser({ isAdmin: false })
-
-      const res = await request(app).post(endpoint).send({
-        name: mockedUser.name,
-        email: undefined,
-        password: mockedUser.password,
-      })
+      const res = await request(app)
+        .post(endpoint)
+        .send({
+          ...mockedUser,
+          email: undefined,
+        })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
 
@@ -59,13 +60,12 @@ describe('User Sign Up integration tests', () => {
     })
 
     test('Should return BAD_REQUEST error when not sent required password', async done => {
-      const mockedUser = mockUser({ isAdmin: false })
-
-      const res = await request(app).post(endpoint).send({
-        name: mockedUser.name,
-        email: mockedUser.email,
-        password: undefined,
-      })
+      const res = await request(app)
+        .post(endpoint)
+        .send({
+          ...mockedUser,
+          password: undefined,
+        })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
 
@@ -73,14 +73,12 @@ describe('User Sign Up integration tests', () => {
     })
 
     test('Should return BAD_REQUEST error when not sent required isAdmin flag', async done => {
-      const mockedUser = mockUser({ isAdmin: false })
-
-      const res = await request(app).post(endpoint).send({
-        name: mockedUser.name,
-        email: mockedUser.email,
-        password: undefined,
-        isAdmin: undefined,
-      })
+      const res = await request(app)
+        .post(endpoint)
+        .send({
+          ...mockedUser,
+          isAdmin: undefined,
+        })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
 
@@ -90,11 +88,12 @@ describe('User Sign Up integration tests', () => {
     test('Should return BAD_REQUEST error when sent a invalid email', async done => {
       const mockedUser = mockUser({ isAdmin: false })
 
-      const res = await request(app).post(endpoint).send({
-        name: mockedUser.name,
-        email: 'invalid_email',
-        password: mockedUser.password,
-      })
+      const res = await request(app)
+        .post(endpoint)
+        .send({
+          ...mockedUser,
+          email: 'invalid_email',
+        })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
 
@@ -103,16 +102,16 @@ describe('User Sign Up integration tests', () => {
 
     test('Should return BAD_REQUEST error when email already in use', async done => {
       const mockedUser = mockUser({ isAdmin: false })
-      const createdUser = await userService.save({
-        ...mockUser({ isAdmin: false }),
-        password: await generateHash(mockedUser.password),
-      })
+      const { hash } = await generateHash(mockedUser.password)
 
-      const res = await request(app).post(endpoint).send({
-        name: createdUser.name,
-        email: createdUser.email,
-        password: mockedUser.password,
-      })
+      const createdUser = await userService.save({ ...mockedUser, password: hash })
+
+      const res = await request(app)
+        .post(endpoint)
+        .send({
+          ...createdUser,
+          password: mockedUser.password,
+        })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
 

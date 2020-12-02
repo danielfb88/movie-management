@@ -1,8 +1,9 @@
 import faker from 'faker'
 import * as HTTPStatus from 'http-status'
 import supertest from 'supertest'
-import UserService from '../../../src/api/v1/business/user/user-service'
+import UserService from '../../../src/api/business/user/user-service'
 import app from '../../../src/app'
+import { User } from '../../../src/models/user'
 import { generateHash } from '../../../src/utils/hash'
 import { getToken, IToken } from '../../helpers'
 import { mockUser } from '../../mocks/user-mock'
@@ -10,24 +11,26 @@ import { mockUser } from '../../mocks/user-mock'
 const request = supertest
 const userService = new UserService()
 
-const mockedUser = mockUser({ isAdmin: false })
+let createdUser: User
 
 let token: IToken
 
 describe('User disable integration tests', () => {
   beforeAll(async done => {
     // creating user
+    const mockedUser = mockUser({ isAdmin: false })
     const { hash } = await generateHash(mockedUser.password)
-    await userService.save({ ...mockedUser, password: hash })
+
+    createdUser = await userService.save({ ...mockedUser, password: hash })
 
     // getting token
-    token = await getToken(mockedUser.id)
+    token = await getToken(createdUser.id)
 
     done()
   })
 
-  describe('DELETE /v1/user', () => {
-    const endpoint = '/v1/user'
+  describe('DELETE /api/user', () => {
+    const endpoint = '/api/user'
 
     test('Should disable an user', async done => {
       const res = await request(app).delete(endpoint).set('Authorization', token.bearerToken)
