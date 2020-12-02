@@ -1,17 +1,12 @@
 import faker from 'faker'
+import { Movie } from '../../src/models/movie'
 
-interface IMockMovie {
-  id: string
-  name: string
-  director: string
-  gender: string
-}
-
-export function mockMovie(): IMockMovie {
+export function mockMovie(): Movie {
   return {
     id: faker.random.uuid(),
     name: faker.name.firstName(),
     director: faker.name.firstName(),
     gender: faker.random.word(),
+    actors: [],
   }
 }

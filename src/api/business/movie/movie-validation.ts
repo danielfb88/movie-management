@@ -1,3 +1,8 @@
 import { body } from 'express-validator'
 
-export const createValidation = [body('name').exists(), body('director').exists(), body('gender').exists()]
+export const createValidation = [
+  body('name').exists(),
+  body('director').exists(),
+  body('gender').exists(),
+  body('actors').isArray(),
+]

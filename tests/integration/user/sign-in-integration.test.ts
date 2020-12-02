@@ -12,14 +12,13 @@ const request = supertest
 const userService = new UserService()
 
 let mockedUser: User
-let createdUser: User
 
 describe('User Sign In integration tests', () => {
   beforeAll(async done => {
     mockedUser = mockUser({ isAdmin: false })
     const { hash } = await generateHash(mockedUser.password)
 
-    createdUser = await userService.save({ ...mockedUser, password: hash })
+    await userService.save({ ...mockedUser, password: hash })
 
     done()
   })
@@ -29,7 +28,7 @@ describe('User Sign In integration tests', () => {
 
     test('Should sign in user', async done => {
       const res = await request(app).post(endpoint).send({
-        email: createdUser.email,
+        email: mockedUser.email,
         password: mockedUser.password,
       })
 
@@ -42,7 +41,7 @@ describe('User Sign In integration tests', () => {
 
     test('Should return UNAUTHORIZED when unnauthorized access', async done => {
       const res = await request(app).post(endpoint).send({
-        email: createdUser.email,
+        email: mockedUser.email,
         password: 'wrong-password',
       })
 
@@ -54,7 +53,7 @@ describe('User Sign In integration tests', () => {
     test('Should return BAD_REQUEST error when sent an invalid email', async done => {
       const res = await request(app).post(endpoint).send({
         email: 'invalid_email',
-        password: createdUser.password,
+        password: mockedUser.password,
       })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
@@ -65,7 +64,7 @@ describe('User Sign In integration tests', () => {
     test('Should return BAD_REQUEST error when not sent a required email', async done => {
       const res = await request(app).post(endpoint).send({
         email: undefined,
-        password: createdUser.password,
+        password: mockedUser.password,
       })
 
       expect(res.status).toBe(HTTPStatus.BAD_REQUEST)
@@ -75,7 +74,7 @@ describe('User Sign In integration tests', () => {
 
     test('Should return BAD_REQUEST error when not sent a required password', async done => {
       const res = await request(app).post(endpoint).send({
-        email: createdUser.email,
+        email: mockedUser.email,
         password: undefined,
       })
 
