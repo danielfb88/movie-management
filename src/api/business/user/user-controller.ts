@@ -30,15 +30,15 @@ export default class UserController extends BaseController {
     try {
       this.checkValidationErrors(req)
 
-      const { body } = req
+      const { name, email, password, isAdmin } = req.body
 
-      const { hash } = await generateHash(body.password)
+      const { hash } = await generateHash(password)
 
       const user = new User()
-      user.name = body.name
-      user.email = body.email
+      user.name = name
+      user.email = email
       user.password = hash
-      user.isAdmin = body.isAdmin
+      user.isAdmin = isAdmin
 
       const createdUser = await this.userService.save(user)
 
@@ -67,15 +67,15 @@ export default class UserController extends BaseController {
     try {
       this.checkValidationErrors(req)
 
-      const { body } = req
+      const { password, email } = req.body
 
-      const user = await this.userService.findEnabledByEmail(body.email)
+      const user = await this.userService.findEnabledByEmail(email)
 
       if (user === undefined) {
         throw new UserNotFoundError()
       }
 
-      const matched = await bcrypt.compare(req.body.password, user.password)
+      const matched = await bcrypt.compare(password, user.password)
 
       if (!matched) {
         throw new UnauthorizedError()
@@ -103,7 +103,7 @@ export default class UserController extends BaseController {
       this.checkValidationErrors(req)
 
       const { userId } = req.headers
-      const { body } = req
+      const { name } = req.body
 
       const user = await this.userService.findEnabledById(userId as string)
 
@@ -111,7 +111,7 @@ export default class UserController extends BaseController {
         throw new UserNotFoundError()
       }
 
-      user.name = body.name
+      user.name = name
 
       const updatedUser = await this.userService.save(user)
 
